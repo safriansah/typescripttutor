@@ -1,0 +1,6 @@
+# Write your query or mutation here
+mutation Login($user: String!, $pass: String!) {
+  login (usernameOrEmail: $user, password: $pass) {
+    ...RegularUserResponse
+  }
+}
