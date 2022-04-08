@@ -2,6 +2,7 @@ import { PrimaryKey, Property } from "@mikro-orm/core";
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, Entity, OneToMany } from "typeorm";
 import { Post } from "./Post";
+import { Updoot } from "./Updoot";
 
 @ObjectType()
 @Entity()
@@ -59,4 +60,7 @@ export class User extends BaseEntity{
 
     @OneToMany(() => Post, (post) => post.creator)
     posts: Post[]
+
+    @OneToMany(() => Updoot, (updoot) => updoot.user)
+    updoots: Updoot[]
 }

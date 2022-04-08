@@ -17,6 +17,8 @@ import {ApolloServerPluginLandingPageGraphQLPlayground} from 'apollo-server-core
 import { sendEmail } from "./utils/sendEmail";
 import { User } from "./entities/User";
 import { createConnection } from "typeorm";
+import path from "path";
+import { Updoot } from "./entities/Updoot";
 
 console.log("test 23");
 
@@ -28,8 +30,11 @@ const main = async () => {
        password: "1234",
        logging: true,
        synchronize: true,
-       entities: [Post, User] 
+       entities: [Post, User, Updoot],
+       migrations: [path.join(__dirname, "./migrations/*")] 
     });
+    // await Post.delete({});
+    await conn.runMigrations();
     // sendEmail("safriansah@dibimbing.id", "hello gaes");
     // const orm = await MikroORM.init(ormconfig);
     // await orm.em.nativeDelete(User, {});

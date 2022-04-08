@@ -1,5 +1,5 @@
 import { title } from "process";
-import { Arg, Ctx, Field, Int, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, FieldResolver, Int, Mutation, ObjectType, Query, Resolver, Root } from "type-graphql";
 import { User } from "../entities/User";
 import { MyContext } from "../types";
 import argon2 from 'argon2';
@@ -29,8 +29,19 @@ class UserResponse {
     user?: User
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+    @FieldResolver(() => String)
+    email(
+        @Root() root: User, @Ctx(){req}: MyContext
+    ) {
+        if (req.session.UserId === root.id) {
+            return root.email;
+        } else {
+            return "";
+        }
+    }
+
     @Query(() => User, { nullable: true })
     async me(
         @Ctx() { em, req }: MyContext
