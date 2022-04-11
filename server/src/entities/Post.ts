@@ -52,6 +52,11 @@ export class Post extends BaseEntity{
     @ManyToOne(() => User,(user) => user.posts)
     creator: User
 
-    @OneToMany(() => Updoot, (updoot) => updoot.post)
+    @OneToMany(() => Updoot, (updoot) => updoot.post, {
+        onDelete: "CASCADE"
+    })
     updoots: Updoot[]
+
+    @Field(() => Int, {nullable: true})
+    voteStatus: number
 }

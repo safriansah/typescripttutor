@@ -1,11 +1,12 @@
-import { dedupExchange, fetchExchange, ssrExchange, stringifyVariables } from "urql";
-import { LogoutMutation, MeQuery, MeDocument, LoginMutation, RegisterMutation } from "../generated/graphql";
+import { dedupExchange, fetchExchange, gql, ssrExchange, stringifyVariables } from "urql";
+import { LogoutMutation, MeQuery, MeDocument, LoginMutation, RegisterMutation, VoteMutationVariables, DeletePostMutationVariables } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 import { cacheExchange, query, Resolver } from '@urql/exchange-graphcache';
 
 import {filter, pipe, tap} from 'wonka';
 import {Exchange} from 'urql';
 import Router from "next/router";
+import { isServer } from "./isServer";
 
 export const errorExchange: Exchange = ({ forward }) => ops$ => {
     return pipe(
@@ -18,58 +19,119 @@ export const errorExchange: Exchange = ({ forward }) => ops$ => {
     )
 }
 
-export const createUrqlClient = (ssrExchange: any) => ({
-    url: 'http://localhost:4000/graphql',
-    fetchOptions: {
-        credentials: "include" as const
-    },
-    exchanges: [dedupExchange, cacheExchange({
-        keys: {
-            PaginatedPost: () => null
+export const createUrqlClient = (ssrExchange: any, ctx: any) => {
+    let cookie = "";
+    if (isServer()) {
+        // console.log("ctx.req.headers.cookie::", ctx.req.headers.cookie);
+        cookie = ctx?.req?.headers?.cookie;
+    }
+    return {
+        url: 'http://localhost:4000/graphql',
+        fetchOptions: {
+            credentials: "include" as const,
+            headers: cookie ? cookie : undefined
         },
-        resolvers: {
-            Query: {
-                posts: cursorPagination(),
-            }
-        },
-        updates: {
-            Mutation: {
-                logout: (_result, args, cache, info) => {
-                    betterUpdateQuery<LogoutMutation, MeQuery>(
-                        cache,
-                        {query: MeDocument},
-                        _result,
-                        () => ({ me: null})
-                    )
+        exchanges: [
+            dedupExchange, 
+            cacheExchange({
+                keys: {
+                    PaginatedPost: () => null
                 },
-                login: (_result, args, cache, info) => {
-                    // cache.updateQuery({query: MeDocument}, (data: MeQuery) => {});
-                    betterUpdateQuery<LoginMutation, MeQuery>(cache, {query: MeDocument}, _result, (result, query) => {
-                        if (result.login.errors) {
-                            return query;
-                        } else {
-                            return {
-                                me: result.login.user
-                            }
-                        }
-                    })
+                resolvers: {
+                    Query: {
+                        posts: cursorPagination(),
+                    }
                 },
-                register: (_result, args, cache, info) => {
-                    // cache.updateQuery({query: MeDocument}, (data: MeQuery) => {});
-                    betterUpdateQuery<RegisterMutation, MeQuery>(cache, {query: MeDocument}, _result, (result, query) => {
-                        if (result.register.errors) {
-                            return query;
-                        } else {
-                            return {
-                                me: result.register.user
+                updates: {
+                    Mutation: {
+                        deletePost: (_result, args, cache, info) => { 
+                            cache.invalidate({
+                                __typename: "Post",
+                                id: (args as DeletePostMutationVariables).id
+                            })
+                        },
+                        vote: (_result, args, cache, info) => { 
+                            const {postId, value} = args as VoteMutationVariables;
+                            const data = cache.readFragment(
+                                gql`
+                                    fragment _ on Post {
+                                        id
+                                        points
+                                        voteStatus
+                                    }
+                                `,
+                                { id: postId } as any
+                            ); // Data or null
+                            console.log("data::", data);
+                            
+                            if (data) {
+                                if (data.voteStatus === value) {
+                                    return;
+                                }
+                                const newPoint = (data.points as number) + (!data.voteStatus ? 1 : 2) * value;
+                                console.log("newPoint::", newPoint);
+                                
+                                cache.writeFragment(
+                                    gql`
+                                        fragment __ on Post {
+                                            points
+                                            voteStatus
+                                        }
+                                    `,
+                                    { id: postId, points: newPoint, voteStatus: value } as any
+                                );
                             }
+                        },
+                        createPost: (_result, args, cache, info) => { 
+                            const allFields = cache.inspectFields("Query");
+                            const fieldInfos = allFields.filter(
+                                (info) => info.fieldName === "posts"
+                            )
+                            fieldInfos.forEach((fi) => {
+                                cache.invalidate("Query", "post", fi.arguments || {});
+                            })
+                        },
+                        logout: (_result, args, cache, info) => {
+                            betterUpdateQuery<LogoutMutation, MeQuery>(
+                                cache,
+                                {query: MeDocument},
+                                _result,
+                                () => ({ me: null})
+                            )
+                        },
+                        login: (_result, args, cache, info) => {
+                            // cache.updateQuery({query: MeDocument}, (data: MeQuery) => {});
+                            betterUpdateQuery<LoginMutation, MeQuery>(cache, {query: MeDocument}, _result, (result, query) => {
+                                if (result.login.errors) {
+                                    return query;
+                                } else {
+                                    return {
+                                        me: result.login.user
+                                    }
+                                }
+                            })
+                        },
+                        register: (_result, args, cache, info) => {
+                            // cache.updateQuery({query: MeDocument}, (data: MeQuery) => {});
+                            betterUpdateQuery<RegisterMutation, MeQuery>(cache, {query: MeDocument}, _result, (result, query) => {
+                                if (result.register.errors) {
+                                    return query;
+                                } else {
+                                    return {
+                                        me: result.register.user
+                                    }
+                                }
+                            })
                         }
-                    })
+                    }
                 }
-            }
-        }
-    }), errorExchange, ssrExchange, fetchExchange],
-})
+            }), 
+            errorExchange, 
+            ssrExchange, 
+            fetchExchange
+        ],
+    };
+};
 
 const cursorPagination = (cursorArgument = 'cursor' ): Resolver => {
     return (_parent, fieldArgs, cache, info) => {
