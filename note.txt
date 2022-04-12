@@ -1,0 +1,463 @@
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+
+npx sequelize-cli model:generate --name rating --attributes accountId:integer,accountCategory:string,visitorId:integer,rating:integer
+npx sequelize-cli model:generate --name companyOperation --attributes accountId:integer,day:string,open:string,close:string
+
+npx sequelize-cli migration:create --name modify_users_add_new_fields
+
+18.136.200.248
+puttygen ultimealWebProd.pem -o mysshkey.ppk
+
+~/.config/composer/vendor/bin/phploy
+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
+
+Callback Parameters
+Check Transaction Status
+Get Bank Accounts List
+Create A New Transaction
+Update Transaction Status
+Create A New Withdraw Request
+
+I once developed an application called pay24u, this application is useful for scraping mutation data from the bank and then matching it with existing transactions. in this application using PHP and nodejs, PHP using the laravel framework is used for dashboards and api, while nodejs is used for scraping and workers. in this project I use PHP to create api like Check Transaction Status, Get Bank Accounts List, Create A New Transaction, Update Transaction Status, Create A New Withdraw Request, and send a callback to the merchant.
+
+p24:
+aplikasi yang digunakan untuk melakukan scrapin data mutasi dari bank kemudian disimpan di database, setelah itu akan ada worker yang melakukan penecekan transaksi yang cocok dengan mutasi, jika cocok maka transaksi akan diupdate statusnya menjadi sukses. saya mengerjakan bagian database, api, woker, scraping
+
+marketing tool
+modul yang digunakan untuk menyimpan template yang akan dikirimkan secara broadcas kepada user yang sudah diselect
+
+logistic service
+service yang digunakan ultimeal app untuk menghubungkan aplikasi dengan vendor kurir, ada 3 vendor yang ada yaitu mr.speedy, biteship(grab), lalamove.service ini memiliki api dan worker, cara kerjanya api akan ditembak oeh ultimeal service untuk menginputkan orderan baru, kemudian worker service akan meneruskan data ke vendor yang teah dipilih, kemudian worker juga akan melakukan ceking status order secara berkala, apabila ada update maka service akan mengirimkan callback kepada ultimeal service
+
+project manajement
+aplikasi yang digunakan untuk melakukan manajemen task. dalam aplikasi ini bisa manajer atau spv bisa membuat task dan mengassign ke staff, kemudian staff akan mengerjakan task yang sudah diassign dan staff juga dapat mengupdate status dari task yang digunakan.
+
+notification modul
+modul ini digunakan oleh admin untuk melakukan broadcast inapp notification, admin bisa melakukan setting notif akan yang akan dikirim dan terdapat pengaturan untuk notif itu kapan akan dikirimkan seperti tanggal, hari, jam, menit
+
+ultimeal voucher modul
+modul ini berguna untuk admin menginputkan vocer yang bisa digunakan pada ultimeal app. pada modul ini admin dapat menginputkan data vocer seperti name deskripsi, potongan, tanggal aktif, term condition, dll.
+
+thirdparty service
+modul ini digunakan untuk menghubungkan service dengan beberapa service diluar perusahaan seperti google service,telegram, dan trello.
+
+message broker service
+service ini berguna untuk menyimpan data antrian yang kemudian diteruskan kepada notification service, data antrian akan disimpan pada rabbitmq kemudian akan disalurkan ke notification service untuk dikirimkan melalui email/sms, dalam service ini juga terdapat fitur chat yang digunakan dalam ultimate dashboard, menggunakan socket io
+
+PUBLICATIONS
+Educational Game for Introducing Indonesian Culture on Android Platform
+INFORM: Jurnal Ilmiah Bidang Teknologi Informasi dan Komunikasi  July 2, 2018
+
+I have qualified in IT. I can use several programming languages ​​such as PHP, HTML, Javascript, NodeJS, and Golang. I've also used several databases such as MySQL, PostgreSQL, and MongoDB. then I can also use Git to do application development. I also have experience setting up and managing servers such as installing docker, setting swap memory, deploying NodeJs applications, and setting up https.
+
+Dear Pintap Indonesia Human Resources Department,
+
+Thank you for the opportunity and the invitation to the online assessment. I will do the assessment as soon as possible.
+
+Thank you for your time and consideration.
+
+Best regards,
+Yolla Faradhilla
+Jessica Elizabeth 
+
+Download Links
+- WhiteSur Gtk Theme : https://www.pling.com/p/1403328/
+- Big Sur Icon Theme : https://www.pling.com/p/1400021/
+- McMojave Cursors : https://www.pling.com/p/1355701/
+- Big Sur Plank Dock : https://www.gnome-look.org/p/1399398/
+- All Big Sur Wallpapers : https://www.pling.com/p/1435378/
+- Ulauncher App : https://github.com/Ulauncher/Ulaunche...
+
+
+6096da250085d748f094f0a3    54  TRF/PAY/TOP-UP ECHANNEL Sdr YULIANUS    34023   cr  2021-05-09  19df554d1768508ff3626d29b730fb66e8536379    IDR 2.993.086,00    Sat May 08 2021 18:36:21 GMT+0000 (Coordinated Universal Time)  0
+6096d0c59928d62da58ac340    54  TRF/PAY/TOP-UP ECHANNEL Sdr YULIANUS    34023   cr  2021-05-09  220facc6b6fb327e492d791fd17f94a48a74fd96    IDR 2.768.086,00    Sat May 08 2021 17:56:21 GMT+0000 (Coordinated Universal Time)  0
+
+1523148198
+q2n27wvq
+
+Syafri, nanti bisa cek ke akun2 ini:
+- BCA Maulana Hidayat (6850267764)
+- Mandiri Agus Maulana (1330015309842)
+- BNI Andreas (1133808588)
+
+2. NAMA REKENING  : MAULANA HIDAYAT 
+NOMOR REKENING : 6850267764
+USER : maulanah0148
+PASS : 199999
+
+1. AGUS MAULANA 1330015309842
+user : Aguskuy285
+pass : Rolex188
+
+1. ANDREAS 1133808588
+user : anan1250772
+pass : rolex999
+
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', function(inputStdin) {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', function() {
+    inputString = inputString.split('\n');
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+
+
+/*
+ * Complete the 'slowestKey' function below.
+ *
+ * The function is expected to return a CHARACTER.
+ * The function accepts 2D_INTEGER_ARRAY keyTimes as parameter.
+ */
+
+function slowestKey(keyTimes) {
+    // Write your code here
+    const ascii = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    console.log(keyTimes);
+    let temp = 0;
+    let res = 0;
+    let prev = 0;
+    for (let key of keyTimes) {
+        console.log(key);
+        let sel = key[1] - prev;
+        if (sel > temp) {
+            temp = sel;
+            res = key[0];
+        }
+        prev = key[1];
+    }
+    return ascii[res];
+}
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const keyTimesRows = parseInt(readLine().trim(), 10);
+
+    const keyTimesColumns = parseInt(readLine().trim(), 10);
+
+    let keyTimes = Array(keyTimesRows);
+
+    for (let i = 0; i < keyTimesRows; i++) {
+        keyTimes[i] = readLine().replace(/\s+$/g, '').split(' ').map(keyTimesTemp => parseInt(keyTimesTemp, 10));
+    }
+
+    const result = slowestKey(keyTimes);
+
+    ws.write(result + '\n');
+
+    ws.end();
+}
+
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', function(inputStdin) {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', function() {
+    inputString = inputString.split('\n');
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+
+/*
+ * Complete the 'minimumGroups' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts INTEGER_ARRAY predators as parameter.
+ */
+
+function minimumGroups(predators) {
+    // Write your code here
+    console.log("predators::", predators)
+    let record = [];
+    let temp = 0;
+    for (let i = 0; i < predators.length; i++) {
+        if (predators[i] == -1) {
+            record.push(predators[i]);
+            temp = i;
+        }
+        if (temp == predators[i]) {
+            record.push(predators[i]);
+            temp = i;
+        }
+    }
+    console.log(record);
+    return record.length;
+}
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const predatorsCount = parseInt(readLine().trim(), 10);
+
+    let predators = [];
+
+    for (let i = 0; i < predatorsCount; i++) {
+        const predatorsItem = parseInt(readLine().trim(), 10);
+        predators.push(predatorsItem);
+    }
+
+    const result = minimumGroups(predators);
+
+    ws.write(result + '\n');
+
+    ws.end();
+}
+
+'use strict';
+
+const fs = require('fs');
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', function(inputStdin) {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', function() {
+    inputString = inputString.split('\n');
+
+    main();
+});
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+
+
+/*
+ * Complete the 'ways' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER total
+ *  2. INTEGER k
+ */
+
+function ways(total, k) {
+    // Write your code here
+    let result = 0;
+    let data = k;
+    let temp = k;
+    let records = [];
+    while (data > 0) {
+        console.log("");
+        console.log("data::", data);
+        let sum = 0;
+        sum += data;
+        let record = "" + data;
+        let counter = 0;
+        while (temp > 0) {
+            console.log("temp::", temp);
+            sum += temp;
+            record += "" + temp;
+            if (sum > total) {
+                if (temp > 1) {
+                    console.log("try");
+                    counter++;
+                    sum -= temp;
+                    record = record.slice(0, -1);
+                } else {
+                    console.log("fail");
+                    break;
+                }
+                temp--;
+            }
+            if (sum == total) {
+                console.log("success");
+                temp--;
+                if (!records.includes(record)) {
+                    result++;
+                    records.push(record);   
+                }
+                break;
+            }
+        }
+        console.log("temp + counter::", temp + counter);
+        if (temp + counter < 1) {
+            data--;
+            temp = data;
+        } else{
+            temp+=counter;
+        }
+    }
+    console.log("records::", records);
+    return result;
+}
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+    const total = parseInt(readLine().trim(), 10);
+
+    const k = parseInt(readLine().trim(), 10);
+
+    const result = ways(total, k);
+
+    ws.write(result + '\n');
+
+    ws.end();
+}
+
+ID	DateJoined
+2343434	2017-01-06
+6343544	2017-01-12
+355445	2017-01-16
+2322324	2017-01-25
+122323	2017-02-05
+4543f43	2017-02-07
+2342342	2017-02-21
+1322323	2017-03-05
+5341124	2017-03-07
+13663442	2017-03-14
+26323242	2017-03-16
+12263545	2017-03-25
+23423423	2017-03-25
+34452352	2017-03-25
+235534534	2017-03-25
+22224233	2017-03-26
+3353235	2017-04-05
+56243434	2017-04-14
+33463266	2017-04-21
+6634653	2017-05-07
+2342324	2017-05-14
+2366436	2017-05-16
+1123124	2017-05-25
+3534534	2017-05-25
+46763543	2017-05-25
+33463255	2017-05-25
+
+/* write your SQL query below */
+select month as Month, 
+count(*) - (
+  select count(*) from maintable_AFAQF where monthname(DateJoined) = prev
+) as MonthToMonthChange
+from (
+  select *, 
+  monthname(DateJoined) as month, 
+  monthname(date_add(DateJoined, interval -1 month)) as prev 
+  from maintable_AFAQF
+) as newTabel
+where prev in (select monthname(DateJoined) as month from maintable_AFAQF)
+group by month
+
+ID	Name	DivisionID	ManagerID	Salary
+356	Daniel Smith	100	133	40000
+122	Arnold Sully	101	null	60000
+467	Lisa Roberts	100	null	80000
+112	Mary Dial	105	467	65000
+775	Dennis Front	103	null	90000
+111	Larry Weis	104	35534	75000
+222	Mark Red	102	133	86000
+577	Robert Night	105	12353	76000
+133	Susan Wall	105	577	110000
+
+SELECT employee.id as ID, employee.name as Name, division.divisionname as DivisionName, manager.name as ManagerName, employee.salary as Salary 
+FROM maintable_TP6J3 employee
+join cb_companydivisions division on employee.divisionid = division.id
+left join maintable_TP6J3 manager on employee.managerid = manager.id
+order by employee.salary desc
+limit 2, 1
+
+<?php 
+
+function TrappingWater($arr) {
+  // code goes here
+  $result = 0;
+  $temp = 0;
+  $sel = 0;
+  // $trap = false;
+  foreach ($arr as $val) {
+    $sel = $temp - $val;
+    $result += $sel > 0 ? $sel : 0;
+    // if ($result > 0) $trap = true;
+    // echo $temp.':'.$val.'::'.$result."\n";
+    $temp = $temp < $val ? $val : $temp;
+  }
+  return $result;
+
+}
+   
+// keep this function call here  
+echo TrappingWater(fgets(fopen('php://stdin', 'r')));  
+
+?>
+
+<?php 
+
+function ASCIIConversion($str) {
+
+  // code goes here
+  $result = "";
+  $datas = explode(" ", $str);
+  foreach ($datas as $val) {
+    $result .= $result == "" ? "" : " ";
+    $result .= implode("", unpack("c*", $val));
+  }
+  return $result;
+
+}
+   
+// keep this function call here  
+echo ASCIIConversion(fgets(fopen('php://stdin', 'r')));  
+
+?>
+
+PASSWORD RAR     : 385MBR09HN
+PASSWORD INSTALL : www.tauvic99.com
+
+[1:46 PM, 4/4/2022] +62 877-4146-3534: okee, udah gw invite ke 2 repo ya
+[1:47 PM, 4/4/2022] +62 877-4146-3534: omega itu LMS kita
+[1:47 PM, 4/4/2022] +62 877-4146-3534: kalau yang satunya lagi itu yang landing page
+[1:47 PM, 4/4/2022] +62 877-4146-3534: kalau mau liat liat, LMS kita bisa di akses di bootcamp.dibimbing.id
+[1:47 PM, 4/4/2022] +62 877-4146-3534: creds nya admin:123!Dibimbingid
+[1:47 PM, 4/4/2022] +62 877-4146-3534: itu bisa di pake login juga di landingpage kita di dibimbing.id
+
+graphql tutorial
+npm init -y
+yarn add -D @types/node typescript
+yarn add -D ts-node
+npx tsconfig.js
+yarn add dotenv
+
+yarn add @mikro-orm/cli @mikro-orm/core @mikro-orm/migrations @mikro-orm/postgresql pg
+npx mikro-orm migration:create
+
+yarn add express apollo-server-express graphql@14.16.0 type-graphql
+yarn add -D @types/express
