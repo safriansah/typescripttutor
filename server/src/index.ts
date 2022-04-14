@@ -19,6 +19,8 @@ import { User } from "./entities/User";
 import { createConnection } from "typeorm";
 import path from "path";
 import { Updoot } from "./entities/Updoot";
+import { createUserLoader } from "./utils/createUserLoader";
+import { createUpdootLoader } from "./utils/createUpdootLoader";
 
 console.log("test 23");
 
@@ -26,14 +28,14 @@ const main = async () => {
     const conn = await createConnection({
        type: "postgres",
        database: "newtutor2",
-       username: "admin",
-       password: "1234",
+       username: "postgres",
+       password: "postgres",
        logging: true,
        synchronize: true,
        entities: [Post, User, Updoot],
        migrations: [path.join(__dirname, "./migrations/*")] 
     });
-    // await Post.delete({});
+    // await Post.delete({}); 
     await conn.runMigrations();
     // sendEmail("safriansah@dibimbing.id", "hello gaes");
     // const orm = await MikroORM.init(ormconfig);
@@ -90,7 +92,7 @@ const main = async () => {
             ApolloServerPluginLandingPageGraphQLPlayground
         ],
         // context: ({ req, res }) => ({ em: orm.em, req, res, redis })
-        context: ({ req, res }) => ({ req, res, redis })
+        context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader(), updootLoader: createUpdootLoader() })
     });
 
     await apolloServer.start();

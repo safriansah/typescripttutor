@@ -5,6 +5,7 @@ import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, ObjectType, Q
 import { getConnection } from "typeorm";
 import { Post } from "../entities/Post";
 import { Updoot } from "../entities/Updoot";
+import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
 import { MyContext } from "../types";
 import { sleep } from "../utils/sleep";
@@ -34,6 +35,33 @@ export class PostResolver {
         @Root() root: Post
     ) {
         return root.text.slice(0, 50);
+    }
+
+    @FieldResolver(() => User)
+    creator(
+        @Root() root: Post,
+        @Ctx() {userLoader}: MyContext
+    ) {
+        // return User.findOne({ where: {id: root.creatorId}});
+        return userLoader.load(root.creatorId);
+    }
+
+    @FieldResolver(() => Int, {nullable: true})
+    async voteStatus(
+        @Root() root: Post,
+        @Ctx() {updootLoader, req}: MyContext
+    ) {
+        // return User.findOne({ where: {id: root.creatorId}});
+        if (!req.session.UserId) {
+            return null
+        }
+        const updoot = await updootLoader.load({
+            postId: root.id,
+            userId: req.session.UserId
+        });
+        console.log("updoot::", updoot);
+        
+        return updoot ? updoot.value : null;
     }
 
     @Mutation(() => Boolean)
@@ -108,9 +136,9 @@ export class PostResolver {
         const param: any[] = [realLimitPlusOne];
         console.log("req.session.UserId::", req.session.UserId);
         
-        if (req.session.UserId) {
-            param.push(req.session.UserId)
-        }
+        // if (req.session.UserId) {
+        //     param.push(req.session.UserId)
+        // }
 
         let cursorIndex = 3;
         if (cursor) {
@@ -119,20 +147,9 @@ export class PostResolver {
         }
 
         const posts = await getConnection().query(`
-            select p.*,
-            json_build_object(
-                'id', u.id,
-                'username', u.username,
-                'email', u.email,
-                'createdAt', u."createdAt",
-                'updatedAt', u."updatedAt"
-            ) as creator,
-            ${
-                req.session.UserId ? '(select value from updoot where "userId" = $2 and "postId" = p.id)' : 'null'
-            } as "voteStatus"
+            select p.*
             from post p
-            inner join "user" u on u.id = p."creatorId"
-            ${cursor ? `where p."createdAt" < $${cursorIndex}` : ""}
+            ${cursor ? `where p."createdAt" < $2` : ""}
             order by p."createdAt" DESC
             limit $1
         `, param);
@@ -160,7 +177,7 @@ export class PostResolver {
         @Ctx() { em }: MyContext
     ): Promise<Post | null> {
         // return em.findOne(Post, { id })
-        return Post.findOne({where: {id}, relations: ["creator"]});
+        return Post.findOne({where: {id}});
     }
 
     @Mutation(() => Post)
